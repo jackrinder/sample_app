@@ -15,6 +15,7 @@ if defined?(Bundler)
   # Bundler.require(:default, :assets, Rails.env)
 end
 
+
 module SampleApp
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
@@ -61,5 +62,14 @@ module SampleApp
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+    
+    #Code copied from http://mikbe.tk/2011/02/10/blazingly-fast-tests/
+    #so that changes in methods are tracked by spork
+    if Rails.env.test? 
+      initializer :after => :initialize_dependency_mechanism do 
+      ActiveSupport::Dependencies.mechanism = :load 
+      end 
+    end
+    
   end
 end
